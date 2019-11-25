@@ -8,9 +8,9 @@
           </div>
           <div class="card-body">
             <form accept-charset="UTF-8" role="form" method="post" action="/login">
-              <input type="hidden" if={ opts.redirect } value={ opts.redirect } name="redirect" />
+              <input type="hidden" if={ props.redirect } value={ props.redirect } name="redirect" />
               <div class="form-group">
-                <input class="form-control" placeholder="Username / Email" name="username" type="text" value={ opts.old ? opts.old.username : '' } autocomplete="email">
+                <input class="form-control" placeholder="Username / Email" name="username" type="text" value={ props.old ? props.old.username : '' } autocomplete="email">
               </div>
               <div class="form-group">
                 <input class="form-control" placeholder="Password" name="password" type="password" autocomplete="current-password">
@@ -18,7 +18,7 @@
               <button class="btn btn-success btn-block" type="submit">
                 Login
               </button>
-              <a class="btn btn-primary btn-block" href="/register{ opts.redirect ? '?redirect=' + opts.redirect : '' }">
+              <a class="btn btn-primary btn-block" href={ `/register${props.redirect ? '?redirect=' + props.redirect : ''}` }>
                 No account?
               </a>
             </form>

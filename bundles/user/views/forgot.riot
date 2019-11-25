@@ -9,7 +9,7 @@
           <div class="card-block">
             <form accept-charset="UTF-8" role="form" method="post" action="/forgot">
               <div class="form-group">
-                <input class="form-control" placeholder="Username" name="username" type="text" value={ opts.old ? opts.old.username : '' }>
+                <input class="form-control" placeholder="Username" name="username" type="text" value={ props.old ? props.old.username : '' }>
               </div>
               <button class="btn btn-success btn-block" type="submit">
                 Submit
@@ -24,7 +24,7 @@
           <div class="card-block">
             <form accept-charset="UTF-8" role="form" method="get" action="/forgot">
               <div class="form-group">
-                <input class="form-control" placeholder="Token" name="token" type="text" value={ opts.old ? opts.old.username : '' }>
+                <input class="form-control" placeholder="Token" name="token" type="text" value={ props.old ? props.old.username : '' }>
               </div>
               <button class="btn btn-success btn-block" type="submit">
                 Submit
