@@ -17,12 +17,12 @@ module.exports = (toMix) => {
     toMix.user.acl = require('user/public/js/acl');
 
     // Add get method
-    toMix.user.get = (key) => {
+    toMix.user.get = (key, d) => {
       // Check key
       if (!key) return toMix.user.__data;
 
       // Return id
-      return dotProp.get(toMix.user.__data, key);
+      return dotProp.get(toMix.user.__data, key) || d;
     };
 
     // Add set method
@@ -39,14 +39,19 @@ module.exports = (toMix) => {
   } else {
     // Check user loaded
     toMix.user = require('user/public/js/bootstrap');
+    
+    // create unbound function
+    const updated = () => {
+      toMix.update();
+    };
 
     // On update
-    toMix.user.on('update', toMix.update);
+    toMix.user.on('update', updated);
 
     // On unmount
     toMix.on('unmount', () => {
       // Remove on update
-      toMix.user.removeListener('update', toMix.update);
+      toMix.user.removeListener('update', updated);
     });
   }
 };

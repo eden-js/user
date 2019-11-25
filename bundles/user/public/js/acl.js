@@ -3,7 +3,7 @@
 const dotProp = require('dot-prop-immutable');
 
 // Require local dependencies
-const store = require('default/public/js/store');
+const store = require('core/public/js/store');
 
 /**
  * Build acl class

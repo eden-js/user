@@ -8,7 +8,7 @@ const dotProp = require('dot-prop');
 
 // Require dependencies
 const acl    = require('user/public/js/acl');
-const store  = require('default/public/js/store');
+const store  = require('core/public/js/store');
 const socket = require('socket/public/js/bootstrap');
 
 /**
@@ -88,12 +88,20 @@ class EdenUser extends Events {
    *
    * @returns {*}
    */
-  get(key) {
+  get(key, d) {
     // Check key
-    if (!key) return this.__data;
+    if (!key || !key.length) return this.__data;
 
-    // Set key/value
-    return dotProp.get(this.__data, key);
+    // Return this key
+    const got = dotProp.get(this.__data, key);
+
+    // check got
+    if (typeof got === 'undefined') {
+      return d;
+    }
+
+    // return got
+    return got;
   }
 
   /**
