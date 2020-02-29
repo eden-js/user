@@ -8,7 +8,7 @@
           </div>
           <div class="card-body">
             <form accept-charset="UTF-8" role="form" method="post" action="/login">
-              <input type="hidden" if={ props.redirect } value={ props.redirect } name="redirect" />
+              <input if={ props.redirect } type="hidden" value={ props.redirect } name="redirect" />
               <div class="form-group">
                 <input class="form-control" placeholder="Username / Email" name="username" type="text" value={ props.old ? props.old.username : '' } autocomplete="email">
               </div>
