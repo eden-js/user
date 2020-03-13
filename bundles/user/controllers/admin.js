@@ -107,7 +107,7 @@ class AdminUserController extends Controller {
 
     // register simple field
     fieldHelper.field('admin.role', {
-      for         : ['frontend', 'admin'],
+      for         : ['admin'],
       title       : 'Role',
       description : 'Role field',
     }, async (req, field, value) => {
@@ -147,7 +147,7 @@ class AdminUserController extends Controller {
 
     // register simple field
     fieldHelper.field('admin.user', {
-      for         : ['frontend', 'admin'],
+      for         : ['admin'],
       title       : 'User',
       description : 'User field',
     }, async (req, field, value) => {
