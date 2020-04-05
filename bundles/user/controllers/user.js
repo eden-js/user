@@ -155,7 +155,12 @@ class UserController extends Controller {
     opts.socket.join(`user.${id}`);
 
     // add to room
-    return await modelHelper.listen(opts.sessionID, await User.findById(id), uuid, true);
+    return await modelHelper.addListener(await User.findById(id), {
+      user      : opts.user,
+      atomic    : true,
+      listenID  : uuid,
+      sessionID : opts.sessionID,
+    });
   }
 
   /**
@@ -175,7 +180,12 @@ class UserController extends Controller {
     opts.socket.leave(`user.${id}`);
 
     // add to room
-    return await modelHelper.deafen(opts.sessionID, await User.findById(id), uuid);
+    return await modelHelper.removeListener(await User.findById(id), {
+      user      : opts.user,
+      atomic    : true,
+      listenID  : uuid,
+      sessionID : opts.sessionID,
+    });
   }
 
   /**
