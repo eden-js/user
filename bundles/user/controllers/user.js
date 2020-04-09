@@ -15,7 +15,7 @@ const Login = model('login');
 
 // Require local dependencies
 const aclHelper   = helper('user/acl');
-const modelHelper = helper('model');
+const syncHelper  = helper('sync');
 const emailHelper = helper('email');
 const blockHelper = helper('cms/block');
 
@@ -155,7 +155,7 @@ class UserController extends Controller {
     opts.socket.join(`user.${id}`);
 
     // add to room
-    return await modelHelper.addListener(await User.findById(id), {
+    return await syncHelper.addListener(await User.findById(id), {
       user      : opts.user,
       atomic    : true,
       listenID  : uuid,
@@ -180,7 +180,7 @@ class UserController extends Controller {
     opts.socket.leave(`user.${id}`);
 
     // add to room
-    return await modelHelper.removeListener(await User.findById(id), {
+    return await syncHelper.removeListener(await User.findById(id), {
       user      : opts.user,
       atomic    : true,
       listenID  : uuid,
