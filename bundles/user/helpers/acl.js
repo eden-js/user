@@ -112,25 +112,25 @@ class AclHelper {
    *
    * @return {Integer}
    */
-  async middleware(req, res) {
+  async middleware(req, res, route) {
     // Check route has acl
-    if (!res.locals.route || (typeof res.locals.route.acl === 'undefined')) return true;
+    if (!route || (typeof route.acl === 'undefined')) return true;
 
     // Check acl
-    const check = await this.validate(req.user, res.locals.route.acl);
+    const check = await this.validate(req.user, route.acl);
 
     // Check if true
     if (!check) {
       // Check if redirect
-      if (res.locals.route.fail) {
+      if (route.fail) {
         // Check if next
-        if (res.locals.route.fail === 'next') {
+        if (route.fail === 'next') {
           // Return false
           return 0;
         }
 
         // Redirect to fail auth redirect
-        res.redirect(res.locals.route.fail);
+        res.redirect(route.fail);
 
         // Return false
         return 2;

@@ -44,7 +44,6 @@ class UserController extends Controller {
     this.registerSubmitAction = this.registerSubmitAction.bind(this);
 
     // Bind private methods
-    this._user = this._user.bind(this);
     this._login = this._login.bind(this);
     this._logout = this._logout.bind(this);
     this._deserialise = this._deserialise.bind(this);
@@ -59,12 +58,12 @@ class UserController extends Controller {
    */
   build() {
     // On render
-    this.eden.pre('view.compile', (render) => {
+    this.eden.pre('view.compile', async ({ req, render }) => {
       // Move menus
-      if (render.state.user && !render.isJSON) render.user = render.state.user;
-
-      // Delete from state
-      delete render.state.user;
+      if (req.user && !render.isJSON) {
+        render.acls = await aclHelper.list(req.user);
+        render.user = await req.user.sanitise(req);
+      }
     });
 
     // Login event listeners
@@ -90,9 +89,6 @@ class UserController extends Controller {
 
     // Deserialize user
     passport.deserializeUser(this._deserialise);
-
-    // Add user to locals
-    this.eden.router.use(this._user);
 
     // Check acl
     this._acl();
@@ -633,22 +629,6 @@ class UserController extends Controller {
 
     // return null
     return null;
-  }
-
-  /**
-   * Adds user to locals
-   *
-   * @param {Request} req
-   * @param {Response} res
-   * @param {Function} next
-   */
-  async _user(req, res, next) {
-    // Set user locally
-    res.locals.acl = await aclHelper.list(req.user);
-    res.locals.user = req.user ? await req.user.sanitise() : false;
-
-    // Run next
-    next();
   }
 
   /**
