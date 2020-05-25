@@ -102,6 +102,7 @@ class User extends Model {
     const sanitised = {
       id         : this.get('_id') ? this.get('_id').toString() : null,
       _id        : this.get('_id') ? this.get('_id').toString() : null,
+      name       : this.name(),
       created_at : this.get('created_at'),
       updated_at : this.get('updated_at'),
     };

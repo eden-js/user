@@ -79,7 +79,10 @@ class UserController extends Controller {
     this.eden.router.use(passport.session());
 
     // Create local strategy
-    passport.use(new Local(this._authenticate));
+    passport.use(new Local({
+      usernameField : 'email',
+      passwordField : 'password',
+    }, this._authenticate));
 
     // Serializes user
     passport.serializeUser((user, done) => {
@@ -388,15 +391,13 @@ class UserController extends Controller {
   async forgotSubmitAction(req, res) {
     // Load user
     const user = await User.or({
-      email : new RegExp(['^', escapeRegex(req.body.username.toLowerCase()), '$'].join(''), 'i'),
-    }, {
-      username : new RegExp(['^', escapeRegex(req.body.username.toLowerCase()), '$'].join(''), 'i'),
+      email : new RegExp(['^', escapeRegex(req.body.email.toLowerCase()), '$'].join(''), 'i'),
     }).findOne();
 
     // Check user exists
     if (!user) {
       // Send error
-      req.alert('error', 'Username not found');
+      req.alert('error', 'Email not found');
 
       // Redirect
       return this.forgotAction(req, res);
@@ -418,7 +419,7 @@ class UserController extends Controller {
     req.alert('success', 'An email has been sent with your password reset token');
 
     // Send email
-    emailHelper.send(user.get('email') || user.get('username'), 'forgot', {
+    emailHelper.send(user.get('email'), 'forgot', {
       token   : user.get('token'),
       subject : `${config.get('domain')} - forgot password`,
     });
@@ -494,10 +495,10 @@ class UserController extends Controller {
     // Create user
     const user = new User();
 
-    // Check username
-    if (req.body.username.trim().length < 5) {
+    // Check email
+    if (req.body.email.trim().length < 5) {
       // Send alert
-      req.alert('error', 'your username must be at least 5 characters long');
+      req.alert('error', 'your email must be at least 5 characters long');
 
       // Render registration page
       return res.render('register', {
@@ -507,37 +508,14 @@ class UserController extends Controller {
     }
 
     // Check email
-    if (req.body.email && req.body.email.length) {
-      // Check email
-      const email = await User.findOne({
-        email : new RegExp(['^', escapeRegex(req.body.email), '$'].join(''), 'i'),
-      });
-
-      // If Email
-      if (email) {
-        // Send alert
-        req.alert('error', `the email "${req.body.email}" is already taken`);
-
-        // Render registration page
-        return res.render('register', {
-          old      : req.body,
-          redirect : req.query.redirect || req.body.redirect || false,
-        });
-      }
-
-      // Set email
-      user.set('email', req.body.email);
-    }
-
-    // Check for user
-    const username = await User.findOne({
-      username : new RegExp(['^', escapeRegex(req.body.username), '$'].join(''), 'i'),
+    const email = await User.findOne({
+      email : new RegExp(['^', escapeRegex(req.body.email), '$'].join(''), 'i'),
     });
 
-    // Check if user exists
-    if (username) {
+    // If Email
+    if (email) {
       // Send alert
-      req.alert('error', `the username "${req.body.username}" is already taken`);
+      req.alert('error', `the email "${req.body.email}" is already taken`);
 
       // Render registration page
       return res.render('register', {
@@ -547,7 +525,7 @@ class UserController extends Controller {
     }
 
     // Set email
-    user.set('username', req.body.username);
+    user.set('email', req.body.email);
 
     // Check password length
     if (req.body.password.trim().length < 5) {
@@ -740,16 +718,15 @@ class UserController extends Controller {
   /**
    * Authenticate user function
    *
-   * @param {String}   username
+   * @param {String}   email
    * @param {String}   password
    * @param {Function} done
    *
    * @returns {*}
    */
-  async _authenticate(username, password, done) {
+  async _authenticate(email, password, done) {
     // Find user
-    const user = await User.match('username', new RegExp(['^', escapeRegex(username), '$'].join(''), 'i')).findOne()
-               || await User.match('email', new RegExp(['^', escapeRegex(username), '$'].join(''), 'i')).findOne();
+    const user = await User.match('email', new RegExp(['^', escapeRegex(email), '$'].join(''), 'i')).findOne();
 
     // Check user exists
     if (!user) {
