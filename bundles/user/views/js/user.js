@@ -34,12 +34,12 @@ module.exports = (toMix) => {
     // Add normal functions
     toMix.user.exists = () => {
       // Return id
-      return !!toMix.user.get('_id');
+      return false;
     };
   } else {
     // Check user loaded
     toMix.user = require('user/public/js/bootstrap');
-    
+
     // create unbound function
     const updated = () => {
       toMix.update();

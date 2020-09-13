@@ -108,7 +108,7 @@ class User extends Model {
     };
 
     // add other fields
-    for (const field of config.get('user.fields')) {
+    for (const field of (config.get('user.fields') || [])) {
       // set sanitised
       sanitised[field.name] = await this.get(field.name);
       // eslint-disable-next-line max-len
