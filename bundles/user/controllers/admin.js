@@ -13,7 +13,6 @@ const Block = model('block');
 
 // require helpers
 const formHelper  = helper('form');
-const fieldHelper = helper('form/field');
 const blockHelper = helper('cms/block');
 
 /**
@@ -99,90 +98,6 @@ class AdminUserController extends Controller {
 
       // save block
       await blockModel.save(req.user);
-    });
-
-    //
-    // FIELS
-    //
-
-    // register simple field
-    fieldHelper.field('admin.role', {
-      for         : ['admin'],
-      title       : 'Role',
-      description : 'Role field',
-    }, async (req, field, value) => {
-      // set tag
-      field.tag = 'role';
-      // eslint-disable-next-line no-nested-ternary
-      field.value = value ? (Array.isArray(value) ? await Promise.all(value.map((item) => {
-        // return sanitise
-        return item.sanitise();
-      })) : await value.sanitise()) : null;
-      // return
-      return field;
-    }, async () => {
-      // save field
-    }, async (req, field, value, old) => {
-      // check value
-      if (!Array.isArray(value)) value = [value];
-
-      // return value map
-      return await Promise.all((value || []).filter(val => val).map(async (val, i) => {
-        // run try catch
-        try {
-          // buffer company
-          const acl = await Acl.findById(val);
-
-          // check company
-          if (acl) return acl;
-
-          // return null
-          return null;
-        } catch (e) {
-          // return old
-          return old[i];
-        }
-      }));
-    });
-
-    // register simple field
-    fieldHelper.field('admin.user', {
-      for         : ['admin'],
-      title       : 'User',
-      description : 'User field',
-    }, async (req, field, value) => {
-      // set tag
-      field.tag = 'user';
-      // eslint-disable-next-line no-nested-ternary
-      field.value = value ? (Array.isArray(value) ? await Promise.all(value.map((item) => {
-        // return sanitised
-        return item.sanitise();
-      })) : await value.sanitise()) : null;
-      // return
-      return field;
-    }, async () => {
-      // save field
-    }, async (req, field, value, old) => {
-      // check value
-      if (!Array.isArray(value)) value = [value];
-
-      // return value map
-      return await Promise.all((value || []).filter(val => val).map(async (val, i) => {
-        // run try catch
-        try {
-          // buffer company
-          const acl = await User.findById(val);
-
-          // check company
-          if (acl) return acl;
-
-          // return null
-          return null;
-        } catch (e) {
-          // return old
-          return old[i];
-        }
-      }));
     });
   }
 
