@@ -41,6 +41,9 @@ class EdenUser extends Events {
 
     // Build user
     this.building = this.build();
+
+    // set max listeners
+    this.setMaxListeners(0);
   }
 
   // ////////////////////////////////////////////////////////////////////////////
