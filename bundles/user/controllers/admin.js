@@ -12,8 +12,7 @@ const User  = model('user');
 const Block = model('block');
 
 // require helpers
-const formHelper  = helper('form');
-const blockHelper = helper('cms/block');
+const formHelper = helper('form');
 
 /**
  * Build user admin controller
@@ -54,51 +53,7 @@ class AdminUserController extends Controller {
    * builds edenjs user
    */
   build() {
-    //
-    // BLOCKS
-    //
-
-    // register simple block
-    blockHelper.block('dashboard.user.users', {
-      acl         : ['admin.user'],
-      for         : ['admin'],
-      title       : 'Users Grid',
-      description : 'Shows grid of users',
-    }, async (req, block) => {
-      // get notes block from db
-      const blockModel = await Block.findOne({
-        uuid : block.uuid,
-      }) || new Block({
-        uuid : block.uuid,
-        type : block.type,
-      });
-
-      // create new req
-      const fauxReq = {
-        query : blockModel.get('state') || {},
-      };
-
-      // return
-      return {
-        tag  : 'grid',
-        name : 'Users',
-        grid : await (await this._grid(req)).render(fauxReq),
-      };
-    }, async (req, block) => {
-      // get notes block from db
-      const blockModel = await Block.findOne({
-        uuid : block.uuid,
-      }) || new Block({
-        uuid : block.uuid,
-        type : block.type,
-      });
-
-      // set data
-      blockModel.set('state', req.body.data.state);
-
-      // save block
-      await blockModel.save(req.user);
-    });
+    
   }
 
   /**

@@ -17,7 +17,6 @@ const Login = model('login');
 const aclHelper   = helper('user/acl');
 const syncHelper  = helper('sync');
 const emailHelper = helper('email');
-const blockHelper = helper('cms/block');
 
 /**
  * Create user controller
@@ -95,28 +94,6 @@ class UserController extends Controller {
 
     // Check acl
     this._acl();
-
-    // set blocks
-    const blocks = ['login', 'register', 'forgot'];
-
-    // do blocks
-    blocks.forEach((b) => {
-      // get uppercase
-      const upper = b.charAt(0).toUpperCase() + b.slice(1);
-
-      // register simple block
-      blockHelper.block(`user.${b}`, {
-        acl         : false,
-        for         : ['frontend'],
-        title       : `${upper} Form`,
-        description : `${upper} Form block`,
-      }, async () => {
-        // return
-        return {
-          tag : b,
-        };
-      }, async () => { });
-    });
   }
 
   /**
