@@ -176,7 +176,7 @@ class EdenUser extends EventEmitter {
     if (user.__data) return null;
 
     // Set built
-    store.user = built;
+    store.user = builtUser;
 
     // Check no user
     if (!user) return this.clear();
