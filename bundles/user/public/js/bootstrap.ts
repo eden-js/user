@@ -1,20 +1,18 @@
 /* eslint-disable no-underscore-dangle */
-// Create built
-let built = null;
 
 // Require riot
-const Events  = require('events');
-const dotProp = require('dot-prop');
+import dotProp from 'dot-prop';
+import { EventEmitter } from 'events';
 
 // Require dependencies
-const acl    = require('user/public/js/acl');
-const store  = require('core/public/js/store');
-const socket = require('socket/public/js/bootstrap');
+import acl from 'user/public/js/acl';
+import store from 'core/public/js/store';
+import socket from 'socket/public/js/bootstrap';
 
 /**
  * Build alert class
  */
-class EdenUser extends Events {
+class EdenUser extends EventEmitter {
   /**
    * Construct edenAlert class
    */
@@ -205,16 +203,16 @@ class EdenUser extends Events {
  *
  * @type {edenAlert}
  */
-built = new EdenUser();
+const builtUser = new EdenUser();
+
+/**
+ * Add user to window.eden
+ */
+window.eden.user = builtUser;
 
 /**
  * Export alert class
  *
  * @type {user}
  */
-module.exports = built;
-
-/**
- * Add user to window.eden
- */
-window.eden.user = built;
+export default builtUser;
