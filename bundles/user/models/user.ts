@@ -1,13 +1,13 @@
 // Require local dependencies
-const Model  = require('model');
-const config = require('config');
-const crypto = require('crypto');
-const socket = require('socket');
+import Model from 'model';
+import config from 'config';
+import crypto from 'crypto';
+import socket from 'socket';
 
 /**
  * Create user model class
  */
-class User extends Model {
+export default class User extends Model {
   /**
    * Construct user model class
    */
@@ -133,9 +133,3 @@ class User extends Model {
     return sanitised;
   }
 }
-
-/**
- * Export user model
- * @type {user}
- */
-module.exports = User;

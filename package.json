@@ -3,9 +3,9 @@
   "description": "",
   "version": "2.0.1",
   "dependencies": {
-    "dot-prop-immutable": "^1.5.0",
-    "escape-string-regexp": "^2.0.0",
-    "passport": "^0.4.0",
+    "dot-prop-immutable": "^2.1.0",
+    "escape-string-regexp": "^5.0.0",
+    "passport": "^0.4.1",
     "passport-local": "^1.0.0"
   },
   "engines": {
@@ -26,11 +26,11 @@
   },
   "homepage": "https://github.com/eden-js/user#readme",
   "devDependencies": {
-    "eslint": "^5.13.0",
     "@edenjs/eslint-config-eden": "^2.0.14",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jsx-a11y": "^6.2.0",
-    "eslint-plugin-react": "^7.12.4"
+    "eslint": "^7.29.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0"
   }
 }
