@@ -140,6 +140,10 @@ class EdenUser extends EventEmitter {
   clear() {
     // Loop fields
     this.__data = {};
+
+    // emit update
+    this.emit('update');
+    this.emit('logout');
   }
 
   /**
